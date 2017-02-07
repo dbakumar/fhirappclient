@@ -24,13 +24,16 @@
 $( document ).ready(function() {
   var queryString = window.location.search.substring(1);
   var paramArray = queryString.split("&");
-  var pidarray = prmarr[0].split("=");
-  var pid = pidarray[1];
+  var pidArray = paramArray[0].split("=");
+  var pid = pidArray[1];
   alert (pid);
+  var tokenArray = paramArray[1].split("=");
+  var token = tokenArray[1];
+  alert (token);
   var FHIRAPPCLOUD = {
        serviceUrl: 'https://open-ic.epic.com/FHIR/api/FHIR/DSTU2',
-       patientId:  paramArray[0] ,
-       auth:  { type : 'bearer' , bearer : paramArray[1]  } ,
+       patientId:  pid ,
+       auth:  { type : 'bearer' , bearer : token  } ,
      };
  alert (FHIRAPPCLOUD . patientId );
 
