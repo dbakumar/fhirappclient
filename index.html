@@ -17,69 +17,76 @@
 
 
 <script>
-$(window).load(function(){
-   var queryString = window.location.search.substring(1);
-   var paramArray = queryString.split("=");
-   var FHIRAPPCLOUD = {
-			  serviceUrl: 'https://open-ic.epic.com/FHIR/api/FHIR/DSTU2',
-			  patientId:  paramArray[0] ,
-			  auth:  { type : 'bearer' , bearer : paramArray[1]  } ,
-      };
-  alert (FHIRAPPCLOUD . patientId );
-});
 /*<![CDATA[*/
-	var smart = FHIR.client(FHIRAPPCLOUD);
+$( document ).ready(function() {
+  var queryString = window.location.search.substring(1);
+  var paramArray = queryString.split("=");
+  var FHIRAPPCLOUD = {
+       serviceUrl: 'https://open-ic.epic.com/FHIR/api/FHIR/DSTU2',
+       patientId:  paramArray[0] ,
+       auth:  { type : 'bearer' , bearer : paramArray[1]  } ,
+     };
+ alert (FHIRAPPCLOUD . patientId );
 
-	//var pq = smart.patient.Something.read();
+ var smart = FHIR.client(FHIRAPPCLOUD);
 
-	var pq = smart.patient.read();
-	pq.then(function(p) {
-	  var name = p.name[0];
-	  var formatted = name.given.join(" ") + " " + name.family.join(" ");
-	   $("#patient_name").text(formatted);
-	   $("#patient_name").append( JSON.stringify(p));
-	   console.log(p);
-	   //eachRecursive(p,   "#patient_name" );
-	});
+ //var pq = smart.patient.Something.read();
 
-	var aller = smart.patient.api.read({type: "AllergyIntolerance", id: smart.patientId})
-	aller.then(function(p) {
-	  var name = p.name[0];
-	  var formatted = name.given.join(" ") + " " + name.family.join(" ");
-	   $("#patient_name").text(formatted);
-	   $("#patient_name").append( JSON.stringify(p));
-	   console.log(p);
-	   //eachRecursive(p,   "#patient_name" );
-	});
+ var pq = smart.patient.read();
+ pq.then(function(p) {
+   var name = p.name[0];
+   var formatted = name.given.join(" ") + " " + name.family.join(" ");
+    $("#patient_name").text(formatted);
+    $("#patient_name").append( JSON.stringify(p));
+    console.log(p);
+    //eachRecursive(p,   "#patient_name" );
+ });
 
-
-	/* Create a medication list */
-	smart.patient.api.search({type: "MedicationOrder", query: {patient: smart.patientId}
-	  }).then(function(r){
-	      r.data.entry.forEach(function(re) {
-	        var rx = re.resource;
-	        var row = $("<li> " + rx.medicationCodeableConcept.text + "</li>");
-	        $("#med_list").append(row);
-	      });
-	  });
-
-	// This function handles arrays and objects
-	function eachRecursive(obj, eleObj)
-	{
-	    for (var k in obj)
-	    {
-	        if (typeof obj[k] == "object" && obj[k] !== null) {
-	        	$(eleObj).append(" Object Name " +  key + "<br>");
-	            eachRecursive(obj[k]);
-	        }
-	        else {
-	        	//console.log ( "" + k + "  :: " + obj[k]);
-	        	$(eleObj).append("" + k + "  :: " + obj[k] +  "<br>");
-	        }
+ var aller = smart.patient.api.read({type: "AllergyIntolerance", id: smart.patientId})
+ aller.then(function(p) {
+   var name = p.name[0];
+   var formatted = name.given.join(" ") + " " + name.family.join(" ");
+    $("#patient_name").text(formatted);
+    $("#patient_name").append( JSON.stringify(p));
+    console.log(p);
+    //eachRecursive(p,   "#patient_name" );
+ });
 
 
-	    }
-	}
+ /* Create a medication list */
+ smart.patient.api.search({type: "MedicationOrder", query: {patient: smart.patientId}
+   }).then(function(r){
+       r.data.entry.forEach(function(re) {
+         var rx = re.resource;
+         var row = $("<li> " + rx.medicationCodeableConcept.text + "</li>");
+         $("#med_list").append(row);
+       });
+   });
+
+ // This function handles arrays and objects
+ function eachRecursive(obj, eleObj)
+ {
+     for (var k in obj)
+     {
+         if (typeof obj[k] == "object" && obj[k] !== null) {
+           $(eleObj).append(" Object Name " +  key + "<br>");
+             eachRecursive(obj[k]);
+         }
+         else {
+           //console.log ( "" + k + "  :: " + obj[k]);
+           $(eleObj).append("" + k + "  :: " + obj[k] +  "<br>");
+         }
+
+
+     }
+ }
+
+
+
+});
+
+
+
 
 	/*]]>*/
 
