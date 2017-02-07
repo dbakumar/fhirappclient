@@ -30,6 +30,7 @@ $( document ).ready(function() {
   var tokenArray = paramArray[1].split("=");
   var token = tokenArray[1];
   alert (token);
+  window.history.replaceState(null, null, window.location.pathname);
   var FHIRAPPCLOUD = {
        serviceUrl: 'https://open-ic.epic.com/FHIR/api/FHIR/DSTU2',
        patientId:  pid ,
